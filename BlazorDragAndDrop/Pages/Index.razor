@@ -1,0 +1,40 @@
+﻿@page "/"
+@using BlazorDragAndDrop.Data
+@using BlazorDragAndDrop.Components
+
+<ItemListContainer Jobs="Jobs" OnStatusUpdated="HandleStatusUpdated">
+    <ItemList ListStatus="ItemStatuses.Todo" AllowedStatuses="@(new[] { ItemStatuses.Started})" />
+    <ItemList ListStatus="ItemStatuses.Started" AllowedStatuses="@(new[] { ItemStatuses.Todo})" />
+    <ItemList ListStatus="ItemStatuses.Completed" AllowedStatuses="@(new[] { ItemStatuses.Started })" />
+</ItemListContainer>
+
+<hr />
+<p>Last updated job was: <strong>@lastUpdatedJob</strong></p>
+<hr />
+
+@foreach (var task in Jobs)
+{
+    <p>@task.Description - <strong>@task.Status</strong></p>
+}
+
+@code {
+   
+
+
+    List<ItemModel> Jobs = new List<ItemModel>();
+    string lastUpdatedJob = "";
+
+    protected override void OnInitialized()
+    {
+        Jobs.Add(new ItemModel { Id = 1, Description = "Create Project Folder", Status = ItemStatuses.Todo, LastUpdated = DateTime.Now });
+        Jobs.Add(new ItemModel { Id = 2, Description = "Update Logo", Status = ItemStatuses.Todo, LastUpdated = DateTime.Now });
+        Jobs.Add(new ItemModel { Id = 3, Description = "Call Suppliers", Status = ItemStatuses.Todo, LastUpdated = DateTime.Now });
+        Jobs.Add(new ItemModel { Id = 4, Description = "Submit drawing", Status = ItemStatuses.Todo, LastUpdated = DateTime.Now });
+        Jobs.Add(new ItemModel { Id = 5, Description = "Order Project", Status = ItemStatuses.Todo, LastUpdated = DateTime.Now });
+    }
+
+    void HandleStatusUpdated(ItemModel updatedItem)
+    {
+        lastUpdatedJob = updatedItem.Description;
+    }
+}

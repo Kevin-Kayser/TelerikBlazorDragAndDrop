@@ -1,0 +1,24 @@
+﻿@using BlazorDragAndDrop.Data
+
+<li class="draggable" draggable="true" title="@ItemModel.Description" @ondragstart="@(() => HandleDragStart(ItemModel))">
+    <TelerikCard>
+        <CardHeader>
+            <CardTitle>
+                <p class="description">@ItemModel.Description</p>
+            </CardTitle>
+        </CardHeader>
+        <CardBody>
+            <p class="last-updated"><small>Last Updated</small> @ItemModel.LastUpdated.ToString("HH:mm.ss tt")</p>
+        </CardBody>
+    </TelerikCard>
+</li>
+
+@code {
+    [CascadingParameter] ItemListContainer Container { get; set; }
+    [Parameter] public ItemModel ItemModel { get; set; }
+
+    private void HandleDragStart(ItemModel selectedItem)
+    {
+        Container.Payload = selectedItem;
+    }
+}
